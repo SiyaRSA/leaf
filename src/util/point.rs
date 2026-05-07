@@ -11,11 +11,25 @@ pub struct Point {
 }
 
 impl Point {
-    pub fn new(x: f32, y: f32,) -> (f32, f32) {
-        return ( x, y );
+    pub fn new(x: f32, y: f32,) -> Self {
+        Self { x, y }
     }
 
-    pub fn vec2(x: f32, y: f32,) -> Vec2 {
-       return Vec2 { x, y };
+    pub fn vec2(&self) -> Vec2 {
+       Vec2 { x: self.x, y: self.y }
+    }
+
+    pub fn desc() -> wgpu::VertexBufferLayout<'static> {
+        wgpu::VertexBufferLayout { 
+            array_stride: std::mem::size_of::<Point>() as wgpu::BufferAddress,
+            step_mode: wgpu::VertexStepMode::Vertex,
+            attributes: &[
+                wgpu::VertexAttribute {
+                    offset: 0,
+                    shader_location: 0,
+                    format: wgpu::VertexFormat::Float32x2,
+                },
+            ],
+        }
     }
 }
