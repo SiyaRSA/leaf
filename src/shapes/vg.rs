@@ -31,4 +31,23 @@ impl VecG {
     pub fn set_pos(mut self, pos: Vec3) {
         self.pos = pos;
     }
+
+    pub fn dec() -> wgpu::VertexBufferLayout<'static> {
+        wgpu::VertexBufferLayout {
+            array_stride: std::mem::size_of::<f32>() as wgpu::BufferAddress * 6,
+            step_mode: wgpu::VertexStepMode::Vertex,
+            attributes: &[
+                wgpu::VertexAttribute {
+                    offset: 0,
+                    shader_location: 0,
+                    format: wgpu::VertexFormat::Float32x2,
+                },
+                wgpu::VertexAttribute {
+                    offset: 8,
+                    shader_location: 1,
+                    format: wgpu::VertexFormat::Float32x4
+                },
+            ],
+        }
+    }
 }
