@@ -1,9 +1,12 @@
+//canvas.rs
 use crate::util::vector::{Vec3, Vec4};
 use wgpu::util::DeviceExt;
 use crate::shapes::VecG;
 use crate::util::Path;
 use wgpu::Device;
 
+#[allow(unused)]
+pub const CANVAS_SHADER: &str = include_str!("../shader/canvas.wgsl");
 
 #[repr(C)]
 pub struct Canvas {
@@ -27,14 +30,15 @@ impl Canvas {
         return Canvas { inner , shapes };
     }
 
-    pub fn c_clear(mut self, clr: Vec4){
+    pub fn c_clear(mut self, clr: Vec4) -> Self {
         self.inner.clr = clr;
+        self
     }
 
-    pub fn build_c1(self, device: Device) -> Vec<wgpu::Buffer> {
+    pub fn build_c1(&self, device: &Device) -> Vec<wgpu::Buffer> {
         let mut buffers = Vec::new();
 
-        for shape in self.shapes {
+        for shape in self.shapes.clone() {
             let clr: Vec4 = shape.clr;
 
             let mut data: Vec<f32> = Vec::new();
