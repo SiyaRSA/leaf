@@ -1,0 +1,1 @@
+pub const CANVAS_SHADER: &str = include_str!("../shader/canvas.wgsl");

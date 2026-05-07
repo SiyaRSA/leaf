@@ -5,9 +5,6 @@ use crate::shapes::VecG;
 use crate::util::Path;
 use wgpu::Device;
 
-#[allow(unused)]
-pub const CANVAS_SHADER: &str = include_str!("../shader/canvas.wgsl");
-
 #[repr(C)]
 pub struct Canvas {
     inner: VecG,
