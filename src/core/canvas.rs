@@ -46,6 +46,52 @@ impl Canvas {
         buffers
     }
 
+    pub fn build_as_c2(&self, device: &Device) -> Vec<wgpu::Buffer> {
+        let mut buffers = Vec::new();
+
+        for shape in self.shapes.clone() {
+            let clr: Vec4 = shape.clr;
+
+            let points = shape.path.points;
+
+            if points.len() < 3 {
+                continue;
+            }
+
+            let mut data: Vec<f32> = Vec::new();
+
+            let mut i = 0;
+
+            while i + 2 < points.len() {
+                let tri = [&points[i], &points[i + 1], &points[i + 2]];
+
+                for p in tri {
+                    data.push(p.x);
+                    data.push(p.y);
+
+                    data.push(clr.x);
+                    data.push(clr.y);
+                    data.push(clr.z);
+                    data.push(clr.w);
+                }
+
+                i += 2;
+            }
+
+            let contents = bytemuck::cast_slice(&data);
+
+            let buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("LEAF Canvas build_as_c2"),
+                contents,
+                usage: wgpu::BufferUsages::VERTEX,
+            });
+
+            buffers.push(buffer);
+        }
+
+        buffers
+    }
+
     pub fn vertex_counts(&self) -> Vec<u32> {
         self.shapes
             .iter()
