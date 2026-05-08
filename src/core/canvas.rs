@@ -98,4 +98,20 @@ impl Canvas {
             .map(|s| s.path.points.len() as u32)
             .collect()
     }
+
+    pub fn c2_vertex_counts(&self) -> Vec<u32> {
+    self.shapes
+        .iter()
+        .map(|s| {
+            let len = s.path.points.len();
+
+            if len < 3 {
+                0
+            } else {
+                // one triangle every 2 steps
+                (((len - 1) / 2) * 3) as u32
+            }
+        })
+        .collect()
+}
 }
